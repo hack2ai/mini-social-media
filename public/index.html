@@ -1,0 +1,909 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="description"
+        content="Mini Social Media application"
+    >
+
+    <title>Mini Social Media</title>
+
+    <link
+        rel="stylesheet"
+        href="/css/style.css"
+    >
+
+</head>
+
+
+<body>
+
+
+    <!-- ==================================================
+         NAVBAR
+         ================================================== -->
+
+    <header class="navbar">
+
+        <div class="container navbar-inner">
+
+
+            <!-- Brand -->
+
+            <a
+                href="/"
+                class="brand"
+                aria-label="Mini Social Media home"
+            >
+                Mini Social
+            </a>
+
+
+            <!-- Navigation -->
+
+            <div class="nav-actions">
+
+
+                <!-- Current user -->
+
+                <span
+                    id="currentUser"
+                    aria-live="polite"
+                >
+                    Not logged in
+                </span>
+
+
+                <!-- ==================================================
+                     NOTIFICATION BUTTON
+                     ================================================== -->
+
+                <button
+                    id="notificationBtn"
+                    type="button"
+                    class="btn btn-secondary notification-button hidden"
+                    aria-label="Notifications"
+                    aria-expanded="false"
+                    aria-controls="notificationPanel"
+                >
+
+                    <span
+                        aria-hidden="true"
+                    >
+                        🔔
+                    </span>
+
+                    <span
+                        id="notificationBadge"
+                        class="notification-badge hidden"
+                        aria-label="Unread notifications"
+                    >
+                        0
+                    </span>
+
+                </button>
+
+
+                <!-- ==================================================
+                     NOTIFICATION PANEL
+                     ================================================== -->
+
+                <div
+                    id="notificationPanel"
+                    class="notification-panel hidden"
+                    role="dialog"
+                    aria-label="Notifications"
+                >
+
+                    <div
+                        class="notification-header"
+                    >
+
+                        <strong>
+                            Notifications
+                        </strong>
+
+
+                        <button
+                            id="markAllNotificationsReadBtn"
+                            type="button"
+                            class="btn btn-secondary"
+                        >
+                            Mark all as read
+                        </button>
+
+                    </div>
+
+
+                    <div
+                        id="notificationsContainer"
+                        class="notifications-container"
+                        aria-live="polite"
+                    >
+
+                        <div class="loading">
+                            Loading notifications...
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- ==================================================
+                     MY PROFILE
+                     ================================================== -->
+
+                <button
+                    id="myProfileBtn"
+                    type="button"
+                    class="btn btn-secondary hidden"
+                >
+                    Profile
+                </button>
+
+
+                <!-- ==================================================
+                     LOGOUT
+                     ================================================== -->
+
+                <button
+                    id="logoutBtn"
+                    type="button"
+                    class="btn btn-danger hidden"
+                >
+                    Logout
+                </button>
+
+            </div>
+
+        </div>
+
+    </header>
+
+
+
+    <!-- ==================================================
+         MAIN
+         ================================================== -->
+
+    <main class="container">
+
+
+        <!-- ==================================================
+             LOGIN
+             ================================================== -->
+
+        <section
+            id="authSection"
+            class="auth-section"
+        >
+
+            <div class="auth-card">
+
+
+                <h1>
+                    Welcome Back
+                </h1>
+
+
+                <p class="muted">
+                    Login to your Mini Social Media account.
+                </p>
+
+
+                <form
+                    id="loginForm"
+                    novalidate
+                >
+
+
+                    <!-- Email -->
+
+                    <div class="form-group">
+
+                        <label
+                            for="loginEmail"
+                        >
+                            Email
+                        </label>
+
+
+                        <input
+                            type="email"
+                            id="loginEmail"
+                            name="email"
+                            autocomplete="email"
+                            placeholder="pankaj@example.com"
+                            required
+                        >
+
+                    </div>
+
+
+                    <!-- Password -->
+
+                    <div class="form-group">
+
+                        <label
+                            for="loginPassword"
+                        >
+                            Password
+                        </label>
+
+
+                        <input
+                            type="password"
+                            id="loginPassword"
+                            name="password"
+                            autocomplete="current-password"
+                            placeholder="Enter password"
+                            required
+                        >
+
+                    </div>
+
+
+                    <!-- Login -->
+
+                    <button
+                        type="submit"
+                        class="btn btn-primary full-width"
+                    >
+                        Login
+                    </button>
+
+                </form>
+
+
+                <div
+                    id="loginMessage"
+                    class="message"
+                    role="status"
+                    aria-live="polite"
+                ></div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- ==================================================
+             AUTHENTICATED APPLICATION
+             ================================================== -->
+
+        <section
+            id="feedSection"
+            class="feed-section hidden"
+        >
+
+
+            <!-- ==================================================
+                 PAGE HEADER
+                 ================================================== -->
+
+            <div class="page-header">
+
+                <div>
+
+                    <h1>
+                        Home Feed
+                    </h1>
+
+
+                    <p class="muted">
+                        See the latest posts from your network.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- ==================================================
+                 CREATE POST
+                 ================================================== -->
+
+            <div class="create-post-card">
+
+
+                <h2>
+                    Create Post
+                </h2>
+
+
+                <form
+                    id="createPostForm"
+                >
+
+
+                    <!-- Caption -->
+
+                    <textarea
+                        id="postCaption"
+                        name="caption"
+                        rows="4"
+                        maxlength="500"
+                        placeholder="What's on your mind?"
+                    ></textarea>
+
+
+                    <!-- Image -->
+
+                    <div class="file-input">
+
+                        <label
+                            for="postImage"
+                        >
+                            Add image
+                        </label>
+
+
+                        <input
+                            type="file"
+                            id="postImage"
+                            name="image"
+                            accept=".jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp"
+                        >
+
+                    </div>
+
+
+                    <!-- Publish -->
+
+                    <button
+                        type="submit"
+                        class="btn btn-primary"
+                    >
+                        Publish Post
+                    </button>
+
+                </form>
+
+
+                <div
+                    id="createPostMessage"
+                    class="message"
+                    role="status"
+                    aria-live="polite"
+                ></div>
+
+            </div>
+
+
+
+            <!-- ==================================================
+                 FEED
+                 ================================================== -->
+
+            <section
+                aria-labelledby="feedTitle"
+            >
+
+
+                <h2
+                    id="feedTitle"
+                    class="visually-hidden"
+                >
+                    Posts
+                </h2>
+
+
+                <div
+                    id="feedContainer"
+                    aria-live="polite"
+                >
+
+                    <div class="loading">
+                        Loading feed...
+                    </div>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- ==================================================
+                 USER PROFILE
+                 ================================================== -->
+
+            <section
+                id="profileSection"
+                class="profile-section hidden"
+                aria-labelledby="profileName"
+            >
+
+                <div class="profile-card">
+
+
+                    <div class="profile-header">
+
+
+                        <!-- ==================================================
+                             PROFILE AVATAR
+                             ================================================== -->
+
+                        <div class="profile-avatar">
+
+
+                            <!-- Initial fallback -->
+
+                            <div
+                                id="profileAvatarInitial"
+                                class="profile-avatar-placeholder"
+                                aria-label="Profile avatar"
+                            >
+                                U
+                            </div>
+
+
+                            <!-- Actual profile image -->
+
+                            <img
+                                id="profilePicture"
+                                class="hidden"
+                                alt="Profile picture"
+                                loading="lazy"
+                            >
+
+                        </div>
+
+
+
+                        <!-- ==================================================
+                             PROFILE INFORMATION
+                             ================================================== -->
+
+                        <div class="profile-info">
+
+
+                            <!-- Name -->
+
+                            <h2
+                                id="profileName"
+                            >
+                                User
+                            </h2>
+
+
+                            <!-- Email -->
+
+                            <p
+                                id="profileEmail"
+                                class="muted"
+                            ></p>
+
+
+                            <!-- Bio -->
+
+                            <p
+                                id="profileBio"
+                                class="profile-bio"
+                            >
+                                No bio available.
+                            </p>
+
+
+
+                            <!-- ==================================================
+                                 PROFILE STATS
+                                 ================================================== -->
+
+                            <div
+                                class="profile-stats"
+                            >
+
+
+                                <!-- Posts -->
+
+                                <span>
+
+                                    <strong
+                                        id="profilePostsCount"
+                                    >
+                                        0
+                                    </strong>
+
+                                    Posts
+
+                                </span>
+
+
+                                <!-- Followers -->
+
+                                <button
+                                    type="button"
+                                    id="followersBtn"
+                                    class="profile-stat-button"
+                                    aria-controls="followListPanel"
+                                >
+
+                                    <strong
+                                        id="profileFollowersCount"
+                                    >
+                                        0
+                                    </strong>
+
+                                    Followers
+
+                                </button>
+
+
+                                <!-- Following -->
+
+                                <button
+                                    type="button"
+                                    id="followingBtn"
+                                    class="profile-stat-button"
+                                    aria-controls="followListPanel"
+                                >
+
+                                    <strong
+                                        id="profileFollowingCount"
+                                    >
+                                        0
+                                    </strong>
+
+                                    Following
+
+                                </button>
+
+                            </div>
+
+
+
+                            <!-- ==================================================
+                                 EDIT PROFILE BUTTON
+                                 ================================================== -->
+
+                            <button
+                                id="editProfileBtn"
+                                type="button"
+                                class="btn btn-secondary hidden"
+                            >
+                                Edit Profile
+                            </button>
+
+
+
+                            <!-- ==================================================
+                                 FOLLOW BUTTON
+                                 ================================================== -->
+
+                            <button
+                                id="followButton"
+                                type="button"
+                                class="btn btn-primary hidden"
+                            >
+                                Follow
+                            </button>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- ==================================================
+                         FOLLOWERS / FOLLOWING LIST
+                         ================================================== -->
+
+                    <div
+                        id="followListPanel"
+                        class="follow-list-panel hidden"
+                        aria-live="polite"
+                    ></div>
+
+
+
+                    <!-- Profile message -->
+
+                    <div
+                        id="profileMessage"
+                        class="message"
+                        role="status"
+                        aria-live="polite"
+                    ></div>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- ==================================================
+                 EDIT PROFILE
+                 ================================================== -->
+
+            <section
+                id="editProfileSection"
+                class="profile-section hidden"
+                aria-labelledby="editProfileTitle"
+            >
+
+                <div class="profile-card">
+
+
+                    <h2
+                        id="editProfileTitle"
+                    >
+                        Edit Profile
+                    </h2>
+
+
+                    <form
+                        id="editProfileForm"
+                    >
+
+
+                        <!-- Name -->
+
+                        <div class="form-group">
+
+                            <label
+                                for="editProfileName"
+                            >
+                                Name
+                            </label>
+
+
+                            <input
+                                type="text"
+                                id="editProfileName"
+                                name="name"
+                                maxlength="50"
+                                autocomplete="name"
+                                required
+                            >
+
+                        </div>
+
+
+
+                        <!-- Bio -->
+
+                        <div class="form-group">
+
+                            <label
+                                for="editProfileBio"
+                            >
+                                Bio
+                            </label>
+
+
+                            <textarea
+                                id="editProfileBio"
+                                name="bio"
+                                rows="4"
+                                maxlength="250"
+                                placeholder="Tell people about yourself..."
+                            ></textarea>
+
+                        </div>
+
+
+
+                        <!-- ==================================================
+                             PROFILE IMAGE UPLOAD
+                             ================================================== -->
+
+                        <div class="form-group">
+
+                            <label
+                                for="editProfileImage"
+                            >
+                                Profile Picture
+                            </label>
+
+
+                            <input
+                                type="file"
+                                id="editProfileImage"
+                                name="image"
+                                accept=".jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp"
+                            >
+
+
+                            <!-- Preview -->
+
+                            <div
+                                id="editProfileImagePreview"
+                                class="profile-edit-preview hidden"
+                            >
+
+                                <img
+                                    id="editProfileImagePreviewImg"
+                                    alt="Selected profile picture preview"
+                                    loading="lazy"
+                                >
+
+                            </div>
+
+                        </div>
+
+
+
+                        <!-- ==================================================
+                             PROFILE IMAGE URL
+                             ================================================== -->
+
+                        <div class="form-group">
+
+                            <label
+                                for="editProfilePicture"
+                            >
+
+                                Profile Picture URL
+
+                                <span class="muted">
+                                    (optional)
+                                </span>
+
+                            </label>
+
+
+                            <input
+                                type="url"
+                                id="editProfilePicture"
+                                name="profilePicture"
+                                placeholder="https://example.com/profile.jpg"
+                                autocomplete="url"
+                            >
+
+                        </div>
+
+
+
+                        <!-- ==================================================
+                             EDIT PROFILE ACTIONS
+                             ================================================== -->
+
+                        <div
+                            class="nav-actions"
+                        >
+
+                            <button
+                                type="submit"
+                                class="btn btn-primary"
+                            >
+                                Save Changes
+                            </button>
+
+
+                            <button
+                                type="button"
+                                id="cancelEditProfileBtn"
+                                class="btn btn-secondary"
+                            >
+                                Cancel
+                            </button>
+
+                        </div>
+
+                    </form>
+
+
+                    <div
+                        id="editProfileMessage"
+                        class="message"
+                        role="status"
+                        aria-live="polite"
+                    ></div>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- ==================================================
+                 DISCOVER USERS
+                 ================================================== -->
+
+            <section
+                id="discoverUsersSection"
+                class="profile-section"
+                aria-labelledby="discoverUsersTitle"
+            >
+
+                <div class="profile-card">
+
+
+                    <!-- Header -->
+
+                    <div class="page-header">
+
+                        <div>
+
+                            <h2
+                                id="discoverUsersTitle"
+                            >
+                                Discover Users
+                            </h2>
+
+
+                            <p class="muted">
+                                Find people and follow them.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- ==================================================
+                         SEARCH USERS
+                         ================================================== -->
+
+                    <div class="form-group">
+
+                        <label
+                            for="userSearchInput"
+                        >
+                            Search Users
+                        </label>
+
+
+                        <input
+                            type="search"
+                            id="userSearchInput"
+                            placeholder="Search by name or email..."
+                            autocomplete="off"
+                            aria-label="Search users by name or email"
+                        >
+
+                    </div>
+
+
+
+                    <!-- ==================================================
+                         USERS CONTAINER
+                         ================================================== -->
+
+                    <div
+                        id="usersContainer"
+                        aria-live="polite"
+                    >
+
+                        <div class="loading">
+                            Loading users...
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+        </section>
+
+    </main>
+
+
+
+    <!-- ==================================================
+         FRONTEND JAVASCRIPT
+         ================================================== -->
+
+    <script
+        src="/js/app.js"
+        defer
+    ></script>
+
+
+</body>
+
+</html>

@@ -1,17 +1,38 @@
 const express = require("express");
-
 const router = express.Router();
 
-const { register } = require("../controllers/authController");
+// Controllers
+const authController = require("../controllers/authController");
 
-const {
-  registerValidator,
-} = require("../validators/authValidator");
+// Validators
+const authValidator = require("../validators/authValidator");
 
+// ==========================
+// DEBUG (Temporary)
+// ==========================
+console.log("========== AUTH ROUTES DEBUG ==========");
+console.log("register:", typeof authController.register);
+console.log("login:", typeof authController.login);
+console.log("registerValidator:", Array.isArray(authValidator.registerValidator));
+console.log("loginValidator:", Array.isArray(authValidator.loginValidator));
+console.log("======================================");
+
+// ==========================
+// Register
+// ==========================
 router.post(
   "/register",
-  registerValidator,
-  register
+  authValidator.registerValidator,
+  authController.register
+);
+
+// ==========================
+// Login
+// ==========================
+router.post(
+  "/login",
+  authValidator.loginValidator,
+  authController.login
 );
 
 module.exports = router;

@@ -1,0 +1,1635 @@
+/* ======================================================
+   MINI SOCIAL MEDIA - GLOBAL STYLES
+   ====================================================== */
+
+* {
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+    background: #f4f7fb;
+    color: #1f2937;
+}
+
+/* ======================================================
+   CONTAINER
+   ====================================================== */
+
+.container {
+    width: min(100% - 32px, 900px);
+    margin: 0 auto;
+}
+
+/* ======================================================
+   NAVBAR
+   ====================================================== */
+
+.navbar {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+
+    background: #111827;
+    color: #ffffff;
+
+    padding: 16px 0;
+
+    box-shadow:
+        0 2px 12px rgba(0, 0, 0, 0.12);
+}
+
+.navbar-inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    gap: 20px;
+}
+
+.brand {
+    color: #ffffff;
+    text-decoration: none;
+
+    font-size: 22px;
+    font-weight: 700;
+
+    transition:
+        opacity 0.2s ease,
+        transform 0.2s ease;
+}
+
+.brand:hover {
+    opacity: 0.9;
+    transform: translateY(-1px);
+}
+
+.nav-actions {
+    display: flex;
+    align-items: center;
+
+    gap: 10px;
+    min-width: 0;
+}
+
+#currentUser {
+    max-width: 240px;
+
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
+    color: #f9fafb;
+
+    font-size: 14px;
+    font-weight: 600;
+}
+
+/* ======================================================
+   AUTH
+   ====================================================== */
+
+.auth-section {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    min-height: calc(100vh - 80px);
+
+    padding: 50px 0;
+}
+
+.auth-card {
+    width: min(100%, 460px);
+
+    padding: 34px;
+
+    background: #ffffff;
+
+    border-radius: 18px;
+
+    box-shadow:
+        0 12px 35px rgba(0, 0, 0, 0.08);
+}
+
+.auth-card h1 {
+    margin: 0 0 10px;
+
+    color: #111827;
+
+    font-size: 34px;
+    line-height: 1.15;
+}
+
+.auth-card p {
+    margin: 0 0 28px;
+}
+
+/* ======================================================
+   FEED
+   ====================================================== */
+
+.feed-section {
+    padding: 32px 0 70px;
+}
+
+.page-header {
+    margin-bottom: 24px;
+}
+
+.page-header h1 {
+    margin: 0 0 6px;
+
+    color: #111827;
+
+    font-size: 32px;
+}
+
+/* ======================================================
+   CREATE POST
+   ====================================================== */
+
+.create-post-card {
+    padding: 24px;
+    margin-bottom: 28px;
+
+    background: #ffffff;
+
+    border-radius: 16px;
+
+    box-shadow:
+        0 8px 28px rgba(0, 0, 0, 0.07);
+}
+
+.create-post-card h2 {
+    margin: 0 0 18px;
+
+    color: #111827;
+}
+
+/* ======================================================
+   FORM
+   ====================================================== */
+
+.form-group {
+    margin-bottom: 18px;
+}
+
+.form-group label,
+.file-input label {
+    display: block;
+
+    margin-bottom: 7px;
+
+    color: #374151;
+
+    font-size: 14px;
+    font-weight: 700;
+}
+
+input,
+textarea {
+    width: 100%;
+
+    padding: 13px 14px;
+
+    background: #ffffff;
+    color: #111827;
+
+    border: 1px solid #d1d5db;
+    border-radius: 10px;
+
+    outline: none;
+
+    font-family: inherit;
+    font-size: 15px;
+
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+input:focus,
+textarea:focus {
+    border-color: #2563eb;
+
+    box-shadow:
+        0 0 0 3px rgba(37, 99, 235, 0.12);
+}
+
+textarea {
+    min-height: 120px;
+
+    resize: vertical;
+}
+
+.file-input {
+    margin: 18px 0;
+}
+
+input[type="file"] {
+    padding: 10px;
+    cursor: pointer;
+}
+
+input[type="file"]::file-selector-button {
+    margin-right: 10px;
+
+    padding: 8px 12px;
+
+    border: 0;
+    border-radius: 7px;
+
+    background: #eef2ff;
+    color: #1d4ed8;
+
+    font-family: inherit;
+    font-weight: 700;
+
+    cursor: pointer;
+}
+
+input[type="file"]::file-selector-button:hover {
+    background: #dbeafe;
+}
+
+/* ======================================================
+   BUTTONS
+   ====================================================== */
+
+.btn {
+    padding: 11px 18px;
+
+    border: 0;
+    border-radius: 9px;
+
+    cursor: pointer;
+
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 700;
+
+    transition:
+        background 0.2s ease,
+        color 0.2s ease,
+        border-color 0.2s ease,
+        opacity 0.2s ease,
+        transform 0.15s ease;
+}
+
+.btn:hover {
+    transform: translateY(-1px);
+}
+
+.btn:active {
+    transform: translateY(0);
+}
+
+.btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+}
+
+/* ======================================================
+   PRIMARY BUTTON
+   ====================================================== */
+
+.btn-primary {
+    background: #2563eb;
+    color: #ffffff;
+}
+
+.btn-primary:hover {
+    background: #1d4ed8;
+}
+
+/* ======================================================
+   SECONDARY BUTTON
+   ====================================================== */
+
+.btn-secondary {
+    background: #e5e7eb;
+    color: #111827;
+
+    border: 1px solid #d1d5db;
+}
+
+.btn-secondary:hover {
+    background: #d1d5db;
+}
+
+/* ======================================================
+   DANGER BUTTON
+   ====================================================== */
+
+.btn-danger {
+    background: #dc2626;
+    color: #ffffff;
+}
+
+.btn-danger:hover {
+    background: #b91c1c;
+}
+
+.full-width {
+    width: 100%;
+}
+
+/* ======================================================
+   POST ACTIONS
+   ====================================================== */
+
+.post-actions {
+    display: flex;
+    align-items: center;
+
+    gap: 10px;
+
+    margin-top: 18px;
+}
+
+.btn-like,
+.btn-comment {
+    background: #eef2f7;
+    color: #111827;
+
+    border: 1px solid #e5e7eb;
+}
+
+.btn-like:hover,
+.btn-comment:hover {
+    background: #e5e7eb;
+}
+
+.btn-like.liked {
+    background: #2563eb;
+    color: #ffffff;
+
+    border-color: #2563eb;
+}
+
+.btn-like.liked:hover {
+    background: #1d4ed8;
+}
+
+/* ======================================================
+   GENERAL HELPERS
+   ====================================================== */
+
+.hidden {
+    display: none !important;
+}
+
+.muted {
+    color: #6b7280;
+}
+
+.message {
+    margin-top: 15px;
+
+    color: #374151;
+
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.loading {
+    padding: 40px 20px;
+
+    text-align: center;
+
+    color: #6b7280;
+
+    font-size: 15px;
+}
+
+.visually-hidden {
+    position: absolute !important;
+
+    width: 1px !important;
+    height: 1px !important;
+
+    padding: 0 !important;
+    margin: -1px !important;
+
+    overflow: hidden !important;
+
+    clip: rect(0, 0, 0, 0) !important;
+
+    white-space: nowrap !important;
+
+    border: 0 !important;
+}
+
+/* ======================================================
+   POST CARD
+   ====================================================== */
+
+.post-card {
+    padding: 22px;
+    margin-bottom: 20px;
+
+    background: #ffffff;
+
+    border-radius: 16px;
+
+    box-shadow:
+        0 7px 25px rgba(0, 0, 0, 0.07);
+
+    overflow: hidden;
+}
+
+.post-author {
+    margin-bottom: 8px;
+
+    color: #111827;
+
+    font-size: 17px;
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition:
+        color 0.2s ease;
+}
+
+.post-author:hover {
+    color: #2563eb;
+}
+
+.post-author-button {
+    display: block;
+
+    width: auto;
+
+    padding: 0;
+    margin: 0 0 8px;
+
+    background: transparent;
+
+    border: 0;
+    border-radius: 0;
+
+    color: #111827;
+
+    font-family: inherit;
+    font-size: 17px;
+    font-weight: 700;
+
+    text-align: left;
+
+    cursor: pointer;
+}
+
+.post-author-button:hover {
+    background: transparent;
+    color: #2563eb;
+
+    transform: none;
+}
+
+.post-author-button:focus-visible {
+    outline: 3px solid rgba(37, 99, 235, 0.25);
+    outline-offset: 3px;
+
+    border-radius: 4px;
+}
+
+.post-caption {
+    margin: 12px 0;
+
+    color: #374151;
+
+    font-size: 16px;
+    line-height: 1.6;
+
+    white-space: pre-wrap;
+
+    overflow-wrap: anywhere;
+}
+
+/* ======================================================
+   POST IMAGE
+   ====================================================== */
+
+.post-image {
+    display: block;
+
+    width: 100%;
+    max-height: 600px;
+
+    margin-top: 14px;
+
+    background: #eef2f7;
+
+    border-radius: 12px;
+
+    object-fit: cover;
+}
+
+/* ======================================================
+   POST META
+   ====================================================== */
+
+.post-meta {
+    margin-top: 15px;
+    padding-top: 12px;
+
+    border-top: 1px solid #eef0f3;
+
+    color: #6b7280;
+
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+/* ======================================================
+   COMMENTS PANEL
+   ====================================================== */
+
+.comments-panel {
+    margin-top: 18px;
+    padding-top: 18px;
+
+    border-top: 1px solid #e5e7eb;
+}
+
+.comments-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    margin-bottom: 14px;
+}
+
+.comments-header h3 {
+    margin: 0;
+
+    color: #111827;
+
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.comments-list {
+    display: flex;
+    flex-direction: column;
+
+    gap: 12px;
+}
+
+/* ======================================================
+   COMMENT ITEM
+   ====================================================== */
+
+.comment-item {
+    padding: 13px;
+
+    background: #f8fafc;
+
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+}
+
+.comment-author {
+    margin-bottom: 5px;
+
+    color: #111827;
+
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.comment-text {
+    color: #374151;
+
+    font-size: 14px;
+    line-height: 1.5;
+
+    overflow-wrap: anywhere;
+}
+
+.comment-meta {
+    margin-top: 6px;
+
+    color: #9ca3af;
+
+    font-size: 12px;
+}
+
+.no-comments {
+    padding: 15px 0;
+
+    color: #6b7280;
+
+    font-size: 14px;
+}
+
+/* ======================================================
+   COMMENT FORM
+   ====================================================== */
+
+.comment-form {
+    display: flex;
+    align-items: center;
+
+    gap: 10px;
+
+    margin-top: 16px;
+}
+
+.comment-form input {
+    flex: 1;
+}
+
+.comment-form button {
+    flex-shrink: 0;
+}
+
+/* ======================================================
+   COMMENT ACTIONS
+   ====================================================== */
+
+.comment-actions {
+    display: flex;
+    align-items: center;
+
+    gap: 8px;
+
+    margin-top: 10px;
+}
+
+.btn-edit-comment,
+.btn-delete-comment {
+    padding: 7px 11px;
+
+    background: #eef2f7;
+    color: #111827;
+
+    border: 1px solid #e5e7eb;
+
+    font-size: 12px;
+}
+
+.btn-edit-comment:hover {
+    background: #dbeafe;
+}
+
+.btn-delete-comment {
+    color: #dc2626;
+}
+
+.btn-delete-comment:hover {
+    background: #fee2e2;
+}
+
+/* ======================================================
+   PROFILE
+   ====================================================== */
+
+.profile-section {
+    padding: 0 0 28px;
+}
+
+.profile-card {
+    padding: 28px;
+
+    background: #ffffff;
+
+    border-radius: 16px;
+
+    box-shadow:
+        0 8px 28px rgba(0, 0, 0, 0.07);
+}
+
+.profile-header {
+    display: flex;
+    align-items: flex-start;
+
+    gap: 24px;
+}
+
+.profile-avatar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    flex-shrink: 0;
+}
+
+.profile-avatar img {
+    display: block;
+
+    width: 110px;
+    height: 110px;
+
+    border-radius: 50%;
+
+    object-fit: cover;
+
+    background: #eef2f7;
+
+    border: 3px solid #e5e7eb;
+}
+
+/* ======================================================
+   PROFILE AVATAR PLACEHOLDER
+   ====================================================== */
+
+.profile-avatar-placeholder {
+    width: 110px;
+    height: 110px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    flex-shrink: 0;
+
+    border-radius: 50%;
+
+    background: #2563eb;
+    color: #ffffff;
+
+    border: 3px solid #e5e7eb;
+
+    font-size: 42px;
+    font-weight: 700;
+
+    line-height: 1;
+}
+
+.profile-avatar-placeholder span {
+    display: block;
+}
+
+/* ======================================================
+   PROFILE INFO
+   ====================================================== */
+
+.profile-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.profile-info h2 {
+    margin: 0 0 6px;
+
+    color: #111827;
+
+    font-size: 28px;
+    line-height: 1.2;
+}
+
+.profile-bio {
+    margin: 12px 0 18px;
+
+    color: #374151;
+
+    line-height: 1.5;
+
+    overflow-wrap: anywhere;
+}
+
+.profile-stats {
+    display: flex;
+    flex-wrap: wrap;
+
+    gap: 22px;
+
+    margin: 16px 0 20px;
+
+    color: #6b7280;
+
+    font-size: 14px;
+}
+
+.profile-stats span {
+    display: inline-flex;
+    align-items: baseline;
+
+    gap: 4px;
+}
+
+.profile-stats strong {
+    color: #111827;
+
+    font-size: 16px;
+}
+
+/* ======================================================
+   CLICKABLE PROFILE STATS
+   ====================================================== */
+
+.profile-stat-button {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 4px;
+
+    padding: 0;
+
+    background: transparent;
+    color: #6b7280;
+
+    border: 0;
+
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: inherit;
+
+    cursor: pointer;
+
+    transition:
+        color 0.2s ease,
+        transform 0.15s ease;
+}
+
+.profile-stat-button:hover {
+    color: #2563eb;
+    transform: translateY(-1px);
+}
+
+.profile-stat-button strong {
+    color: #111827;
+}
+
+.profile-stat-button:hover strong {
+    color: #2563eb;
+}
+
+.profile-stat-button:focus-visible {
+    outline: 3px solid rgba(37, 99, 235, 0.25);
+    outline-offset: 3px;
+    border-radius: 4px;
+}
+
+/* ======================================================
+   FOLLOWERS / FOLLOWING LIST
+   ====================================================== */
+
+.follow-list-panel {
+    margin-top: 20px;
+    padding-top: 18px;
+
+    border-top: 1px solid #e5e7eb;
+}
+
+.follow-list-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    margin-bottom: 14px;
+}
+
+.follow-list-header h3 {
+    margin: 0;
+
+    color: #111827;
+
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.follow-list {
+    display: flex;
+    flex-direction: column;
+
+    gap: 10px;
+}
+
+.follow-user-item {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+
+    width: 100%;
+
+    padding: 12px 14px;
+
+    background: #f8fafc;
+    color: #111827;
+
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+
+    font-family: inherit;
+    text-align: left;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        border-color 0.2s ease,
+        transform 0.15s ease;
+}
+
+.follow-user-item:hover {
+    background: #eef2ff;
+    border-color: #c7d2fe;
+
+    transform: translateY(-1px);
+}
+
+.follow-user-item:focus-visible {
+    outline: 3px solid rgba(37, 99, 235, 0.25);
+    outline-offset: 2px;
+}
+
+.follow-user-item strong {
+    color: #111827;
+
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.follow-user-item span {
+    margin-top: 3px;
+
+    color: #6b7280;
+
+    font-size: 13px;
+
+    overflow-wrap: anywhere;
+}
+
+/* Empty follow list */
+.follow-list-panel .no-comments {
+    padding: 12px 0;
+}
+
+#followButton {
+    min-width: 120px;
+}
+
+#followButton.following {
+    background: #eef2f7;
+    color: #111827;
+
+    border: 1px solid #d1d5db;
+}
+
+#followButton.following:hover {
+    background: #e5e7eb;
+}
+
+/* ======================================================
+   PROFILE MESSAGE
+   ====================================================== */
+
+#profileMessage:empty {
+    display: none;
+}
+
+/* ======================================================
+   RESPONSIVE - TABLET
+   ====================================================== */
+
+@media (max-width: 768px) {
+    .container {
+        width: min(100% - 24px, 900px);
+    }
+
+    .auth-card {
+        padding: 28px;
+    }
+
+    .feed-section {
+        padding-top: 24px;
+    }
+
+    .page-header h1 {
+        font-size: 28px;
+    }
+
+    .post-card {
+        padding: 18px;
+    }
+
+    .profile-card {
+        padding: 22px;
+    }
+}
+
+/* ======================================================
+   RESPONSIVE - MOBILE
+   ====================================================== */
+
+@media (max-width: 600px) {
+    .container {
+        width: calc(100% - 20px);
+    }
+
+    .navbar {
+        padding: 13px 0;
+    }
+
+    .navbar-inner {
+        flex-direction: column;
+        align-items: flex-start;
+
+        gap: 10px;
+    }
+
+    .nav-actions {
+        width: 100%;
+
+        justify-content: space-between;
+
+        flex-wrap: wrap;
+    }
+
+    #currentUser {
+        max-width: 180px;
+    }
+
+    .auth-section {
+        min-height: auto;
+
+        padding: 30px 0;
+    }
+
+    .auth-card {
+        padding: 22px;
+
+        border-radius: 14px;
+    }
+
+    .auth-card h1 {
+        font-size: 28px;
+    }
+
+    .feed-section {
+        padding: 22px 0 45px;
+    }
+
+    .page-header h1 {
+        font-size: 25px;
+    }
+
+    .create-post-card {
+        padding: 18px;
+
+        border-radius: 14px;
+    }
+
+    .post-card {
+        padding: 16px;
+
+        border-radius: 14px;
+    }
+
+    .post-author {
+        font-size: 16px;
+    }
+
+    .post-author-button {
+        font-size: 16px;
+    }
+
+    .post-caption {
+        font-size: 15px;
+    }
+
+    .post-image {
+        max-height: 420px;
+
+        border-radius: 10px;
+    }
+
+    .post-actions {
+        gap: 8px;
+
+        flex-wrap: wrap;
+    }
+
+    .post-actions .btn {
+        flex: 1;
+
+        min-width: 110px;
+    }
+
+    .comment-form {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .comment-form input,
+    .comment-form button {
+        width: 100%;
+    }
+
+    .comment-actions {
+        flex-wrap: wrap;
+    }
+
+    .btn {
+        padding: 10px 14px;
+    }
+
+    /* Profile */
+
+    .profile-card {
+        padding: 20px;
+    }
+
+    .profile-header {
+        flex-direction: column;
+        align-items: center;
+
+        text-align: center;
+    }
+
+    .profile-avatar img,
+    .profile-avatar-placeholder {
+        width: 96px;
+        height: 96px;
+    }
+
+    .profile-avatar-placeholder {
+        font-size: 36px;
+    }
+
+    .profile-info {
+        width: 100%;
+    }
+
+    .profile-info h2 {
+        font-size: 24px;
+    }
+
+    .profile-stats {
+        justify-content: center;
+
+        gap: 16px;
+    }
+
+    .profile-stat-button {
+        font-size: 14px;
+    }
+
+    .follow-list-panel {
+        margin-top: 16px;
+    }
+
+    .follow-user-item {
+        padding: 11px 12px;
+    }
+
+    #followButton {
+        width: 100%;
+    }
+}
+
+/* ======================================================
+   VERY SMALL SCREENS
+   ====================================================== */
+
+@media (max-width: 380px) {
+    .auth-card h1 {
+        font-size: 25px;
+    }
+
+    .post-actions {
+        flex-direction: column;
+    }
+
+    .post-actions .btn {
+        width: 100%;
+    }
+
+    .profile-stats {
+        flex-direction: column;
+        align-items: center;
+    }
+}
+
+/* ======================================================
+   NOTIFICATIONS
+   ====================================================== */
+
+/* Notification button */
+.notification-button {
+    position: relative;
+    min-width: 54px;
+    height: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 14px;
+    cursor: pointer;
+    z-index: 1002;
+}
+
+/* Unread badge */
+.notification-badge {
+    position: absolute;
+    top: -6px;
+    right: -6px;
+
+    min-width: 22px;
+    height: 22px;
+
+    padding: 0 6px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 999px;
+
+    background: #dc2626;
+    color: #ffffff;
+
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 1;
+
+    border: 2px solid #ffffff;
+
+    z-index: 1004;
+}
+
+/* Notification panel */
+.notification-panel {
+    position: absolute;
+
+    top: calc(100% + 12px);
+    right: 120px;
+
+    width: 380px;
+    max-width: calc(100vw - 30px);
+
+    max-height: 500px;
+
+    overflow: hidden;
+
+    background: #ffffff;
+    color: #111827;
+
+    border: 1px solid #d1d5db;
+    border-radius: 14px;
+
+    box-shadow:
+        0 18px 45px rgba(0, 0, 0, 0.18);
+
+    z-index: 2000;
+}
+
+/* Notification header */
+.notification-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 12px;
+
+    padding: 14px 16px;
+
+    border-bottom: 1px solid #e5e7eb;
+
+    background: #ffffff;
+}
+
+.notification-header strong {
+    font-size: 18px;
+    font-weight: 700;
+}
+
+/* Smaller mark-all button */
+.notification-header .btn {
+    min-height: 34px;
+    padding: 7px 10px;
+    font-size: 12px;
+}
+
+/* Notification list */
+.notifications-container {
+    max-height: 420px;
+
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+/* Empty state */
+.notifications-container .loading,
+.notifications-container .no-notifications {
+    padding: 28px 18px;
+
+    text-align: center;
+
+    color: #64748b;
+}
+
+/* Individual notification */
+.notification-item {
+    display: block;
+
+    width: 100%;
+
+    padding: 14px 16px;
+
+    border: 0;
+    border-bottom: 1px solid #e5e7eb;
+
+    background: #ffffff;
+
+    text-align: left;
+
+    cursor: pointer;
+
+    transition:
+        background 0.15s ease,
+        opacity 0.15s ease;
+}
+
+.notification-item:hover {
+    background: #f8fafc;
+}
+
+.notification-item:last-child {
+    border-bottom: 0;
+}
+
+/* Unread notification */
+.notification-item.unread {
+    background: #eff6ff;
+}
+
+.notification-item.unread:hover {
+    background: #dbeafe;
+}
+
+/* Notification content */
+.notification-message {
+    font-size: 14px;
+    line-height: 1.5;
+
+    color: #0f172a;
+}
+
+.notification-time {
+    margin-top: 5px;
+
+    font-size: 12px;
+
+    color: #64748b;
+}
+
+/* Notification sender */
+.notification-sender {
+    font-weight: 700;
+}
+
+/* Navbar needs relative positioning */
+.navbar {
+    position: sticky;
+    top: 0;
+
+    z-index: 1000;
+}
+
+/* Prevent notification panel from affecting
+   navbar flex layout */
+.nav-actions {
+    position: relative;
+}
+
+/* Mobile notification panel */
+@media (max-width: 768px) {
+
+    .notification-panel {
+        position: fixed;
+
+        top: 75px;
+        left: 15px;
+        right: 15px;
+
+        width: auto;
+        max-width: none;
+    }
+
+}
+
+
+/* Very small screens */
+@media (max-width: 480px) {
+
+    .notification-header {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .notification-header .btn {
+        width: 100%;
+    }
+
+}
+
+/* ======================================================
+   NOTIFICATION UX POLISH
+   ====================================================== */
+
+.notification-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+
+    padding: 14px 16px;
+
+    border-bottom: 1px solid #e5e7eb;
+    background: #ffffff;
+
+    cursor: pointer;
+
+    transition:
+        background-color 0.15s ease,
+        transform 0.15s ease;
+}
+
+.notification-item:hover {
+    background: #f8fafc;
+}
+
+.notification-item.unread {
+    background: #eff6ff;
+}
+
+.notification-item.unread:hover {
+    background: #dbeafe;
+}
+
+/* Avatar */
+.notification-avatar {
+    width: 42px;
+    height: 42px;
+
+    flex: 0 0 42px;
+
+    border-radius: 50%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    overflow: hidden;
+
+    background: #2563eb;
+    color: #ffffff;
+
+    font-size: 16px;
+    font-weight: 700;
+}
+
+.notification-avatar img {
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+}
+
+/* Main notification content */
+.notification-content {
+    min-width: 0;
+    flex: 1;
+}
+
+.notification-message {
+    font-size: 14px;
+    line-height: 1.5;
+    color: #0f172a;
+}
+
+.notification-sender {
+    font-weight: 700;
+}
+
+.notification-time {
+    margin-top: 4px;
+
+    font-size: 12px;
+    color: #64748b;
+}
+
+/* Notification type icon */
+.notification-type-icon {
+    width: 30px;
+    height: 30px;
+
+    flex: 0 0 30px;
+
+    border-radius: 50%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 14px;
+
+    background: #f1f5f9;
+}
+
+/* Unread dot */
+.notification-unread-dot {
+    width: 8px;
+    height: 8px;
+
+    flex: 0 0 8px;
+
+    margin-top: 7px;
+
+    border-radius: 50%;
+
+    background: #2563eb;
+}
+
+/* Read notifications */
+.notification-item.read {
+    background: #ffffff;
+}
+
+.notification-item.read .notification-unread-dot {
+    visibility: hidden;
+}
+
+/* Better empty state */
+.notification-empty {
+    padding: 36px 20px;
+
+    text-align: center;
+
+    color: #64748b;
+}
+
+.notification-empty-icon {
+    font-size: 34px;
+    margin-bottom: 10px;
+}
+
+.notification-empty-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: #334155;
+}
+
+.notification-empty-text {
+    margin-top: 5px;
+    font-size: 13px;
+}
+
+/* Notification panel */
+.notification-panel {
+    width: 420px;
+    max-width: calc(100vw - 24px);
+
+    border-radius: 16px;
+
+    overflow: hidden;
+}
+
+/* Header */
+.notification-header {
+    padding: 14px 16px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 10px;
+
+    background: #ffffff;
+
+    border-bottom: 1px solid #e5e7eb;
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+
+    .notification-panel {
+        position: fixed;
+
+        top: 75px;
+        left: 12px;
+        right: 12px;
+
+        width: auto;
+        max-width: none;
+    }
+
+    .notification-item {
+        padding: 13px 14px;
+    }
+
+}

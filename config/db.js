@@ -1,14 +1,46 @@
 const mongoose = require("mongoose");
 
+// ==========================================
+// Connect MongoDB
+// ==========================================
 const connectDB = async () => {
-  try {
-    const conn = await mongoose.connect(process.env.MONGODB_URI);
+    try {
+        // ------------------------------------------
+        // Validate MongoDB URI
+        // ------------------------------------------
+        if (!process.env.MONGODB_URI) {
+            throw new Error(
+                "MONGODB_URI is not defined in the environment."
+            );
+        }
 
-    console.log(`MongoDB Connected: ${conn.connection.name}`);
-  } catch (err) {
-    console.error(err);
-    process.exit(1);
-  }
+        // ------------------------------------------
+        // Connect to MongoDB
+        // ------------------------------------------
+        const conn = await mongoose.connect(
+            process.env.MONGODB_URI
+        );
+
+        console.log(
+            `✅ MongoDB Connected: ${conn.connection.name}`
+        );
+
+    } catch (error) {
+        console.error(
+            "❌ MongoDB Connection Failed"
+        );
+
+        console.error(
+            "Message:",
+            error.message
+        );
+
+        process.exit(1);
+    }
 };
+
+// ==========================================
+// Export
+// ==========================================
 
 module.exports = connectDB;

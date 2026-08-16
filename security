@@ -1,0 +1,77 @@
+Security
+
+Implemented Controls
+
+Authentication
+
+JWT-based authentication
+
+Password hashing with bcrypt
+
+Protected API endpoints
+
+Authorization
+
+Ownership checks for modifying posts and comments
+
+Self-follow prevention
+
+Protected follow/unfollow operations
+
+HTTP Security
+
+Helmet
+
+CORS configuration
+
+Request size limits
+
+Rate limiting
+
+Centralized error handling
+
+Input Validation
+
+ObjectId validation
+
+Comment length/content validation
+
+Request validation on protected operations
+
+Notification Security
+
+Duplicate unread notification protection
+
+Unread notification cleanup on unlike/unfollow
+
+Recipient ownership checks
+
+Pagination
+
+MongoDB indexes
+
+90-day TTL retention
+
+Secrets
+
+Never commit:
+
+.env
+
+JWT secrets
+
+MongoDB credentials
+
+Cloudinary API secrets
+
+Email credentials
+
+Other API keys
+
+Use .env.example as a safe template.
+
+Reporting Security Issues
+
+Do not publish sensitive security information in a public issue.
+
+Report security concerns privately through the repository's supported contact or security reporting mechanism.
