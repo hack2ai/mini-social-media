@@ -1,503 +1,251 @@
-Mini Social Media
-
-A full-stack social media web application built with Node.js, Express.js, MongoDB, Mongoose, and Vanilla JavaScript.
-
-The application provides authentication, profiles, posts, image uploads, likes, comments, follow/unfollow, user discovery, a personalized feed, and a notification system.
-
-Features
-
-Authentication
-
-User registration and login
-
-JWT-based authentication
-
-Protected API routes
-
-Logout and session cleanup
-
-Password hashing with bcrypt
-
-Social Features
-
-Create, edit, and delete posts
-
-Image uploads
-
-Like / unlike posts
-
-Create, edit, and delete comments
-
-Follow / unfollow users
-
-Followers / following counts
-
-User discovery and search
-
-Personalized home feed
-
-Profiles
-
-User profile pages
-
-Profile picture
-
-Bio
-
-Post count
-
-Follower count
-
-Following count
-
-Notifications
-
-Follow notifications
-
-Like notifications
-
-Comment notifications
-
-Unread notification badge
-
-Mark one notification as read
-
-Mark all notifications as read
-
-Notification-to-profile/post navigation
-
-Paginated notification API
-
-Duplicate unread-notification protection
-
-Unread notification cleanup on unlike/unfollow
-
-90-day notification retention using MongoDB TTL
-
-Security
-
-Helmet security headers
-
-CORS configuration
-
-JWT authentication
-
-Request size limits
-
-Rate limiting
-
-Input validation
-
-MongoDB ObjectId validation
-
-Authorization and ownership checks
-
-Centralized error handling
-
-Notification cleanup and deduplication
-
-MongoDB query indexes
-
-Testing
-
-Jest
-
-Supertest
-
-API smoke tests
-
-Manual end-to-end regression testing
-
-Tech Stack
-
-Layer
-
-Technology
-
-Frontend
-
-HTML5, CSS3, Vanilla JavaScript
-
-Backend
-
-Node.js, Express.js
-
-Database
-
-MongoDB, Mongoose
-
-Authentication
-
-JWT, bcrypt
-
-Media
-
-Cloudinary
-
-Security
-
-Helmet, CORS, express-rate-limit, express-validator
-
-Testing
-
-Jest, Supertest
-
-Development
-
-Nodemon, Git, GitHub
-
-Architecture
-
-                         ┌──────────────────────┐
-                         │       Browser        │
-                         │ HTML / CSS / JS      │
-                         └──────────┬───────────┘
-                                    │
-                                    ▼
-                         ┌──────────────────────┐
-                         │    Express.js API    │
-                         │      Node.js         │
-                         └──────────┬───────────┘
-                                    │
-        ┌───────────────────────────┼───────────────────────────┐
-        │                           │                           │
-        ▼                           ▼                           ▼
- Authentication             Controllers / Routes         Middleware
-        │                           │                           │
-        └───────────────────────────┼───────────────────────────┘
-                                    │
-                                    ▼
-                               Mongoose
-                                    │
-                                    ▼
-                                 MongoDB
-
-                         Post/Profile Images
-                                    │
-                                    ▼
-                                Cloudinary
-
-Project Structure
-
+# Mini Social Media
+
+> A full-stack social platform built with Node.js, Express, MongoDB, and Vanilla JavaScript, with authentication, posts, social interactions, notifications, media uploads, and automated API smoke testing.
+
+[![Node.js](https://img.shields.io/badge/Node.js-20%2B-339933?style=for-the-badge&logo=node.js&logoColor=white)](https://nodejs.org/)
+[![Express](https://img.shields.io/badge/Express.js-API-000000?style=for-the-badge&logo=express&logoColor=white)](https://expressjs.com/)
+[![MongoDB](https://img.shields.io/badge/MongoDB-Database-47A248?style=for-the-badge&logo=mongodb&logoColor=white)](https://www.mongodb.com/)
+[![JavaScript](https://img.shields.io/badge/JavaScript-ES6%2B-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
+[![Jest](https://img.shields.io/badge/Jest-Testing-C21325?style=for-the-badge&logo=jest&logoColor=white)](https://jestjs.io/)
+
+## Overview
+
+Mini Social Media is a portfolio-grade social networking application demonstrating a complete web stack without a frontend framework.
+
+Users can create profiles, publish posts, interact through likes and comments, follow other users, receive notifications, upload images, and browse a personalized feed.
+
+The backend uses a REST API architecture with MongoDB/Mongoose persistence and a security-focused middleware layer.
+
+## Key Features
+
+### Authentication
+
+- User registration and login
+- JWT-based authentication
+- Password hashing with bcrypt
+- Protected API routes
+- Logout/session cleanup
+
+### Social Platform
+
+- Create, edit, and delete posts
+- Image uploads
+- Like/unlike posts
+- Create, edit, and delete comments
+- Follow/unfollow users
+- User discovery and search
+- Personalized home feed
+
+### Profiles & Notifications
+
+- User profiles
+- Profile pictures and bios
+- Follower/following counts
+- Follow, like, and comment notifications
+- Unread notification badge
+- Mark-one / mark-all-as-read workflows
+- Notification-to-resource navigation
+- Paginated notification API
+- Duplicate-notification prevention
+- 90-day MongoDB TTL retention
+
+### Security
+
+- Helmet security headers
+- CORS configuration
+- JWT authentication
+- Rate limiting
+- Request-size limits
+- Input validation
+- MongoDB ObjectId validation
+- Authorization/ownership checks
+- Centralized error handling
+- MongoDB indexes
+
+## Architecture
+
+```text
+                        Browser
+                  HTML / CSS / JavaScript
+                            │
+                            ▼
+                     Express REST API
+                            │
+        ┌───────────────────┼───────────────────┐
+        ▼                   ▼                   ▼
+ Authentication       Routes / Controllers   Middleware
+        │                   │                   │
+        └───────────────────┼───────────────────┘
+                            ▼
+                        Services
+                            │
+                            ▼
+                         Mongoose
+                            │
+                            ▼
+                         MongoDB
+                            │
+                            └──────► TTL / Indexes
+
+                 Image Uploads
+                       │
+                       ▼
+                   Cloudinary
+```
+
+## Technology Stack
+
+| Layer | Technology |
+|---|---|
+| Frontend | HTML5 • CSS3 • Vanilla JavaScript |
+| Backend | Node.js • Express.js |
+| Database | MongoDB • Mongoose |
+| Authentication | JWT • bcrypt |
+| Media | Cloudinary |
+| Security | Helmet • CORS • express-rate-limit • express-validator |
+| Testing | Jest • Supertest |
+| Development | Nodemon • Git • GitHub |
+
+## Project Structure
+
+```text
 mini-social-media/
 ├── config/
 ├── controllers/
 ├── middleware/
 ├── models/
-├── public/
-│   ├── css/
-│   ├── images/
-│   ├── js/
-│   └── uploads/
 ├── routes/
-├── scripts/
 ├── services/
-├── tests/
-├── utils/
 ├── validators/
+├── utils/
+├── tests/
+├── scripts/
+├── public/
 ├── views/
-│
 ├── docs/
 │   └── API.md
-│
 ├── app.js
 ├── server.js
 ├── package.json
-├── package-lock.json
 ├── .env.example
-├── .gitignore
-├── LICENSE
-├── README.md
-└── SECURITY.md
+├── SECURITY.md
+└── README.md
+```
 
-Getting Started
+## Getting Started
 
-1. Clone the repository
+### Prerequisites
 
+- Node.js 20+
+- MongoDB
+- npm
+- Cloudinary account if image uploads are enabled
+
+### 1. Clone
+
+```bash
 git clone https://github.com/hack2ai/mini-social-media.git
 cd mini-social-media
+```
 
-2. Install dependencies
+### 2. Install dependencies
 
+```bash
 npm install
+```
 
-3. Configure environment variables
+### 3. Configure environment
 
-Create a local .env file from .env.example.
+Create a local `.env` from `.env.example` and configure the MongoDB connection, JWT secret, Cloudinary credentials, application port, and any frontend URL required by the current configuration.
 
-Windows PowerShell
+Never commit `.env` or real production credentials.
 
-Copy-Item .env.example .env
+### 4. Start the application
 
-Then configure the required values for your local environment, including:
-
-MongoDB connection string
-
-JWT secret
-
-Cloudinary credentials
-
-Application port
-
-Frontend URL when required
-
-Never commit your real .env file or production secrets to GitHub.
-
-4. Start the development server
-
+```bash
 npm run dev
+```
 
-Open:
+Default local URL:
 
-http://localhost:5000
+`http://localhost:5000`
 
-5. Run the automated smoke tests
-
-npm test -- --runInBand tests/app.smoke.test.js
-
-Current verified result:
-
-Test Suites: 1 passed, 1 total
-Tests:       5 passed, 5 total
-
-API
+## API
 
 Base URL:
 
-http://localhost:5000/api
+`http://localhost:5000/api`
 
-Main API areas include:
+The API is organized around authentication, users/profiles, feed, posts, comments, follows, notifications, image uploads, and health checks.
 
-Authentication
+Detailed endpoint documentation is available in [`docs/API.md`](docs/API.md).
 
-Users / profiles
+## Testing
 
-Feed
+Run the complete Jest suite:
 
-Posts
-
-Comments
-
-Follow / unfollow
-
-Notifications
-
-Image upload
-
-Health check
-
-Detailed endpoint documentation:
-
-API Documentation
-
-Security
-
-The application includes several security controls:
-
-JWT-based authentication
-
-Password hashing with bcrypt
-
-Protected API endpoints
-
-Authorization and ownership checks
-
-Helmet security headers
-
-CORS configuration
-
-Rate limiting
-
-Request-size limits
-
-Input validation
-
-ObjectId validation
-
-Centralized error handling
-
-Notification deduplication and cleanup
-
-MongoDB indexes
-
-90-day notification retention using TTL
-
-For more information:
-
-Security Documentation
-
-Testing
-
-Automated regression smoke tests
-
-The current Jest + Supertest smoke suite verifies:
-
-GET /api/health
-
-Frontend entry point
-
-Protected notifications endpoint
-
-API 404 handling
-
-Helmet security headers
-
-Result:
-
-Test Suites: 1 passed, 1 total
-Tests:       5 passed, 5 total
-
-Manual end-to-end regression testing
-
-The application was also manually tested across:
-
-Login / logout
-
-Home feed
-
-Post creation and management
-
-Like / unlike
-
-Comment creation
-
-Follow / unfollow
-
-Like notifications
-
-Comment notifications
-
-Follow notifications
-
-Notification navigation
-
-Notification pagination
-
-Read / unread notification handling
-
-AI-Assisted Development
-
-AI tools were used as development assistants, not as a replacement for testing or engineering review.
-
-ChatGPT
-
-Used for:
-
-Architecture planning
-
-Debugging assistance
-
-Security review
-
-Code review
-
-Test planning
-
-Documentation assistance
-
-Development troubleshooting
-
-Blackbox AI
-
-Used for:
-
-In-editor development assistance
-
-Debugging and implementation iteration
-
-The final application was manually tested, debugged, reviewed, and validated with automated API smoke tests.
-
-Screenshots
-
-Add your project screenshots under:
-
-screenshots/
-├── 01-login.png
-├── 02-home-feed.png
-├── 03-create-post.png
-├── 04-profile.png
-├── 05-discover-users.png
-├── 06-comments.png
-├── 07-notifications.png
-├── 08-follow-system.png
-└── 09-jest-tests.png
-
-Login
-
-
-
-Home Feed
-
-
-
-Profile
-
-
-
-Notifications
-
-
-
-Automated Tests
-
-
-
-GitHub Topics
-
-Recommended repository topics:
-
-nodejs
-expressjs
-mongodb
-mongoose
-javascript
-social-media
-jwt
-rest-api
-full-stack
-jest
-supertest
-helmet
-cloudinary
-web-development
-
-Development
-
-Run the development server:
-
-npm run dev
-
-Run all Jest tests:
-
+```bash
 npm test
+```
 
-Run the smoke suite specifically:
+Run the API smoke suite:
 
+```bash
 npm test -- --runInBand tests/app.smoke.test.js
+```
 
-Contributing
+The smoke suite covers health checks, frontend availability, protected notification access, API 404 handling, and security headers.
 
-Fork the repository.
+## Security
 
-Create a feature branch.
+This project implements multiple application-level security controls, but it should not be treated as a security-audited production service.
 
-Make your changes.
+For production deployment, additionally consider:
 
-Add or update tests where appropriate.
+- HTTPS and secure cookie configuration where applicable
+- Secret management and rotation
+- Stronger authentication/recovery controls
+- Centralized audit logging
+- Dependency vulnerability scanning
+- Abuse detection and monitoring
+- Strict CORS allowlists
+- File-type/content validation for uploaded media
+- Database backup and recovery procedures
+- Threat modeling and penetration testing
 
-Commit your changes with a clear message.
+See [`SECURITY.md`](SECURITY.md) for the repository's security guidance.
 
-Open a pull request.
+## Screenshots
 
-Example:
+Place product screenshots under `screenshots/` and document them here as the UI evolves.
 
-git checkout -b feature/your-feature
-git add .
-git commit -m "feat: add your feature"
-git push origin feature/your-feature
+Recommended showcase images:
 
-License
+- Login / registration
+- Home feed
+- Create post
+- User profile
+- Discover users
+- Comments
+- Notifications
+- Follow system
+- Automated test results
 
-This project is licensed under the MIT License.
+## AI-Assisted Development
 
-See LICENSE.
+AI tools were used as development assistants for architecture planning, debugging, security review, code review, test planning, and documentation. The resulting implementation was still manually reviewed and tested by the project author.
+
+## Project Value
+
+This project demonstrates practical **MERN-style backend engineering, REST API design, authentication, authorization, MongoDB data modeling, media handling, notification workflows, application security, and automated testing**.
+
+## Author
+
+**Pankaj (Tony) Kumar**  
+AI Engineer • Full Stack Developer • Generative AI & RAG Specialist
+
+[GitHub](https://github.com/hack2ai) • [LinkedIn](https://www.linkedin.com/in/pankaj-kumar-ab591a216)
+
+## License
+
+MIT — see [LICENSE](LICENSE).
