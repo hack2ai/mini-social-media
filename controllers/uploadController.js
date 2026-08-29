@@ -2,22 +2,13 @@ const cloudinary = require("../config/cloudinary");
 const streamifier = require("streamifier");
 
 exports.uploadImage = async (req, res) => {
-  console.log("========== STEP 4 ==========");
-  console.log("Controller reached");
-
   try {
-    console.log("Request File:", req.file);
-
     if (!req.file) {
-      console.log("No file received!");
-
       return res.status(400).json({
         success: false,
         message: "Please select an image.",
       });
     }
-
-    console.log("Uploading to Cloudinary...");
 
     const streamUpload = () => {
       return new Promise((resolve, reject) => {
@@ -27,11 +18,9 @@ exports.uploadImage = async (req, res) => {
           },
           (error, result) => {
             if (error) {
-              console.error("Cloudinary Error:", error);
               return reject(error);
             }
 
-            console.log("Cloudinary Upload Success!");
             resolve(result);
           }
         );
@@ -42,22 +31,25 @@ exports.uploadImage = async (req, res) => {
 
     const result = await streamUpload();
 
-    console.log("Upload Complete:");
-    console.log(result.secure_url);
+    if (!result || !result.secure_url || !result.public_id) {
+      console.error("UPLOAD ERROR: Cloudinary returned an incomplete result.");
+      return res.status(502).json({
+        success: false,
+        message: "Image upload failed.",
+      });
+    }
 
     return res.status(200).json({
       success: true,
       imageUrl: result.secure_url,
       publicId: result.public_id,
     });
-
   } catch (error) {
-    console.error("========== UPLOAD ERROR ==========");
-    console.error(error);
+    console.error("UPLOAD ERROR:", error.message);
 
-    return res.status(500).json({
+    return res.status(502).json({
       success: false,
-      message: error.message,
+      message: "Image upload failed.",
     });
   }
 };
