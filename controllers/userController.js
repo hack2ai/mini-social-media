@@ -18,7 +18,7 @@ exports.getAllUsers = async (req, res) => {
       users,
     });
   } catch (error) {
-    console.error("GET ALL USERS ERROR:", error);
+    console.error("GET ALL USERS ERROR:", error.message);
 
     return res.status(500).json({
       success: false,
@@ -39,7 +39,7 @@ exports.getProfile = async (req, res) => {
       user: req.user,
     });
   } catch (error) {
-    console.error("GET PROFILE ERROR:", error);
+    console.error("GET PROFILE ERROR:", error.message);
 
     return res.status(500).json({
       success: false,
@@ -66,9 +66,15 @@ exports.updateProfile = async (req, res) => {
       });
     }
 
-    // Only update fields that were actually provided.
     if (name !== undefined) {
-      const trimmedName = String(name).trim();
+      if (typeof name !== "string") {
+        return res.status(400).json({
+          success: false,
+          message: "Name must be a string.",
+        });
+      }
+
+      const trimmedName = name.trim();
 
       if (!trimmedName) {
         return res.status(400).json({
@@ -77,15 +83,54 @@ exports.updateProfile = async (req, res) => {
         });
       }
 
+      if (trimmedName.length < 3 || trimmedName.length > 50) {
+        return res.status(400).json({
+          success: false,
+          message: "Name must be between 3 and 50 characters.",
+        });
+      }
+
       user.name = trimmedName;
     }
 
     if (bio !== undefined) {
-      user.bio = String(bio).trim();
+      if (typeof bio !== "string") {
+        return res.status(400).json({
+          success: false,
+          message: "Bio must be a string.",
+        });
+      }
+
+      const trimmedBio = bio.trim();
+
+      if (trimmedBio.length > 250) {
+        return res.status(400).json({
+          success: false,
+          message: "Bio cannot exceed 250 characters.",
+        });
+      }
+
+      user.bio = trimmedBio;
     }
 
     if (profilePicture !== undefined) {
-      user.profilePicture = String(profilePicture).trim();
+      if (typeof profilePicture !== "string") {
+        return res.status(400).json({
+          success: false,
+          message: "Profile picture must be a string.",
+        });
+      }
+
+      const trimmedProfilePicture = profilePicture.trim();
+
+      if (trimmedProfilePicture.length > 2048) {
+        return res.status(400).json({
+          success: false,
+          message: "Profile picture URL is too long.",
+        });
+      }
+
+      user.profilePicture = trimmedProfilePicture;
     }
 
     await user.save();
@@ -93,14 +138,14 @@ exports.updateProfile = async (req, res) => {
     return res.status(200).json({
       success: true,
       message: "Profile updated successfully.",
-      user,
+      user: await User.findById(user._id).select("-password"),
     });
   } catch (error) {
-    console.error("UPDATE PROFILE ERROR:", error);
+    console.error("UPDATE PROFILE ERROR:", error.message);
 
     return res.status(500).json({
       success: false,
-      message: error.message || "Failed to update profile.",
+      message: "Failed to update profile.",
     });
   }
 };
@@ -114,7 +159,6 @@ exports.getUserById = async (req, res) => {
   try {
     const { id } = req.params;
 
-    // Validate MongoDB ObjectId first
     if (!mongoose.Types.ObjectId.isValid(id)) {
       return res.status(400).json({
         success: false,
@@ -136,7 +180,7 @@ exports.getUserById = async (req, res) => {
       user,
     });
   } catch (error) {
-    console.error("GET USER ERROR:", error);
+    console.error("GET USER ERROR:", error.message);
 
     return res.status(500).json({
       success: false,
