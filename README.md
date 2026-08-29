@@ -1,32 +1,35 @@
 # Mini Social Media
 
-> A full-stack social platform built with Node.js, Express, MongoDB, and Vanilla JavaScript, with authentication, posts, social interactions, notifications, media uploads, and automated API smoke testing.
+![Node.js](https://img.shields.io/badge/Node.js-20%2B-339933?style=for-the-badge&logo=node.js&logoColor=white)
+![Express](https://img.shields.io/badge/Express.js-API-000000?style=for-the-badge&logo=express&logoColor=white)
+![MongoDB](https://img.shields.io/badge/MongoDB-Database-47A248?style=for-the-badge&logo=mongodb&logoColor=white)
+![JavaScript](https://img.shields.io/badge/JavaScript-ES6%2B-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
+![Jest](https://img.shields.io/badge/Jest-Testing-C21325?style=for-the-badge&logo=jest&logoColor=white)
+[![CI](https://github.com/hack2ai/mini-social-media/actions/workflows/ci.yml/badge.svg)](https://github.com/hack2ai/mini-social-media/actions/workflows/ci.yml)
 
-[![Node.js](https://img.shields.io/badge/Node.js-20%2B-339933?style=for-the-badge&logo=node.js&logoColor=white)](https://nodejs.org/)
-[![Express](https://img.shields.io/badge/Express.js-API-000000?style=for-the-badge&logo=express&logoColor=white)](https://expressjs.com/)
-[![MongoDB](https://img.shields.io/badge/MongoDB-Database-47A248?style=for-the-badge&logo=mongodb&logoColor=white)](https://www.mongodb.com/)
-[![JavaScript](https://img.shields.io/badge/JavaScript-ES6%2B-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
-[![Jest](https://img.shields.io/badge/Jest-Testing-C21325?style=for-the-badge&logo=jest&logoColor=white)](https://jestjs.io/)
+> A full-stack social platform built with Node.js, Express, MongoDB, and Vanilla JavaScript, with authentication, posts, social interactions, notifications, media uploads, and automated API testing.
+
+## Project status
+
+The core social-platform implementation and repository documentation are in place. GitHub Actions is configured to install dependencies with `npm ci` and execute the Jest test suite. The current CI result should be considered verified only after a workflow run for the current repository state has completed.
 
 ## Overview
 
-Mini Social Media is a portfolio-grade social networking application demonstrating a complete web stack without a frontend framework.
+Mini Social Media is a portfolio-oriented social networking application built without a frontend framework. Users can create profiles, publish posts, interact through likes and comments, follow other users, receive notifications, upload images, and browse a personalized feed.
 
-Users can create profiles, publish posts, interact through likes and comments, follow other users, receive notifications, upload images, and browse a personalized feed.
+The backend follows a REST API architecture with MongoDB/Mongoose persistence and a security-focused middleware layer.
 
-The backend uses a REST API architecture with MongoDB/Mongoose persistence and a security-focused middleware layer.
-
-## Key Features
+## Key features
 
 ### Authentication
 
 - User registration and login
 - JWT-based authentication
-- Password hashing with bcrypt
+- bcrypt password hashing
 - Protected API routes
 - Logout/session cleanup
 
-### Social Platform
+### Social platform
 
 - Create, edit, and delete posts
 - Image uploads
@@ -36,11 +39,10 @@ The backend uses a REST API architecture with MongoDB/Mongoose persistence and a
 - User discovery and search
 - Personalized home feed
 
-### Profiles & Notifications
+### Profiles and notifications
 
-- User profiles
-- Profile pictures and bios
-- Follower/following counts
+- User profiles and profile pictures
+- Bios and follower/following counts
 - Follow, like, and comment notifications
 - Unread notification badge
 - Mark-one / mark-all-as-read workflows
@@ -49,7 +51,7 @@ The backend uses a REST API architecture with MongoDB/Mongoose persistence and a
 - Duplicate-notification prevention
 - 90-day MongoDB TTL retention
 
-### Security
+### Application security
 
 - Helmet security headers
 - CORS configuration
@@ -61,6 +63,8 @@ The backend uses a REST API architecture with MongoDB/Mongoose persistence and a
 - Authorization/ownership checks
 - Centralized error handling
 - MongoDB indexes
+
+These controls are documented as application features; this repository is not represented as a formal production security audit. fileciteturn121file0
 
 ## Architecture
 
@@ -91,25 +95,34 @@ The backend uses a REST API architecture with MongoDB/Mongoose persistence and a
                        │
                        ▼
                    Cloudinary
+
+                 CI pipeline
+             npm ci → Jest tests
 ```
 
-## Technology Stack
+## Technology stack
 
 | Layer | Technology |
 |---|---|
-| Frontend | HTML5 • CSS3 • Vanilla JavaScript |
-| Backend | Node.js • Express.js |
-| Database | MongoDB • Mongoose |
-| Authentication | JWT • bcrypt |
+| Frontend | HTML5, CSS3, Vanilla JavaScript |
+| Backend | Node.js, Express.js |
+| Database | MongoDB, Mongoose |
+| Authentication | JWT, bcrypt |
 | Media | Cloudinary |
-| Security | Helmet • CORS • express-rate-limit • express-validator |
-| Testing | Jest • Supertest |
-| Development | Nodemon • Git • GitHub |
+| Security | Helmet, CORS, express-rate-limit, express-validator |
+| Testing | Jest, Supertest |
+| CI | GitHub Actions |
+| Development | Nodemon, Git, GitHub |
 
-## Project Structure
+The repository's current dependency manifest includes the backend, security, testing, and development packages used by the project. fileciteturn122file0
+
+## Project structure
 
 ```text
 mini-social-media/
+├── .github/
+│   └── workflows/
+│       └── ci.yml
 ├── config/
 ├── controllers/
 ├── middleware/
@@ -124,22 +137,25 @@ mini-social-media/
 ├── views/
 ├── docs/
 │   └── API.md
-├── app.js
-├── server.js
+├── evidence/
+│   ├── README.md
+│   └── verified-results.md
 ├── package.json
+├── package-lock.json
 ├── .env.example
 ├── SECURITY.md
+├── CONTRIBUTING.md
 └── README.md
 ```
 
-## Getting Started
+## Getting started
 
 ### Prerequisites
 
 - Node.js 20+
 - MongoDB
 - npm
-- Cloudinary account if image uploads are enabled
+- Cloudinary account when image uploads are enabled
 
 ### 1. Clone
 
@@ -154,9 +170,11 @@ cd mini-social-media
 npm install
 ```
 
+For reproducible CI-style installation, use `npm ci` with the committed lockfile. fileciteturn123file0
+
 ### 3. Configure environment
 
-Create a local `.env` from `.env.example` and configure the MongoDB connection, JWT secret, Cloudinary credentials, application port, and any frontend URL required by the current configuration.
+Create `.env` from `.env.example` and provide the required MongoDB connection, JWT secret, Cloudinary credentials, application port, and allowed frontend origin as required by the current configuration.
 
 Never commit `.env` or real production credentials.
 
@@ -168,17 +186,21 @@ npm run dev
 
 Default local URL:
 
-`http://localhost:5000`
+```text
+http://localhost:5000
+```
 
 ## API
 
 Base URL:
 
-`http://localhost:5000/api`
+```text
+http://localhost:5000/api
+```
 
-The API is organized around authentication, users/profiles, feed, posts, comments, follows, notifications, image uploads, and health checks.
+The REST API covers authentication, users/profiles, feed, posts, comments, follows, notifications, image uploads, and health checks.
 
-Detailed endpoint documentation is available in [`docs/API.md`](docs/API.md).
+Detailed endpoint documentation: [`docs/API.md`](docs/API.md)
 
 ## Testing
 
@@ -194,50 +216,61 @@ Run the API smoke suite:
 npm test -- --runInBand tests/app.smoke.test.js
 ```
 
-The smoke suite covers health checks, frontend availability, protected notification access, API 404 handling, and security headers.
+The repository's package manifest defines both normal and coverage-oriented Jest commands. fileciteturn122file0
 
-## Security
+## CI
 
-This project implements multiple application-level security controls, but it should not be treated as a security-audited production service.
+GitHub Actions runs the project's Node.js test workflow for relevant changes:
 
-For production deployment, additionally consider:
+```text
+Checkout
+   ↓
+Node.js 20
+   ↓
+npm ci
+   ↓
+npm test -- --runInBand
+```
 
-- HTTPS and secure cookie configuration where applicable
-- Secret management and rotation
-- Stronger authentication/recovery controls
-- Centralized audit logging
-- Dependency vulnerability scanning
-- Abuse detection and monitoring
-- Strict CORS allowlists
-- File-type/content validation for uploaded media
-- Database backup and recovery procedures
-- Threat modeling and penetration testing
+The workflow intentionally uses the committed `package-lock.json` for deterministic installation.
 
-See [`SECURITY.md`](SECURITY.md) for the repository's security guidance.
+## Evidence
+
+See [`evidence/README.md`](evidence/README.md) and [`evidence/verified-results.md`](evidence/verified-results.md).
+
+Evidence should be sanitized before publication. Never commit JWT secrets, API keys, session tokens, private user information, or production database exports.
 
 ## Screenshots
 
-Place product screenshots under `screenshots/` and document them here as the UI evolves.
-
-Recommended showcase images:
+Recommended showcase screenshots:
 
 - Login / registration
 - Home feed
 - Create post
 - User profile
-- Discover users
+- User discovery
 - Comments
 - Notifications
 - Follow system
-- Automated test results
+- Test results
 
-## AI-Assisted Development
+Do not claim screenshot evidence exists until the files are actually committed to `screenshots/` or `evidence/screenshots/`.
 
-AI tools were used as development assistants for architecture planning, debugging, security review, code review, test planning, and documentation. The resulting implementation was still manually reviewed and tested by the project author.
+## Security
 
-## Project Value
+This project demonstrates application-level defensive controls but is **not a production security-audited service**.
 
-This project demonstrates practical **MERN-style backend engineering, REST API design, authentication, authorization, MongoDB data modeling, media handling, notification workflows, application security, and automated testing**.
+For production deployment, additionally consider HTTPS, secure secret management and rotation, strict CORS allowlists, stronger authentication/recovery controls, dependency vulnerability scanning, upload content validation, centralized logging, abuse monitoring, database backup/recovery, threat modeling, and penetration testing.
+
+See [`SECURITY.md`](SECURITY.md) for the repository security policy.
+
+## AI-assisted development
+
+AI tools may be used as development assistants for architecture planning, debugging, security review, testing, and documentation. Any generated changes should remain subject to human review and actual runtime verification.
+
+## Project value
+
+This project demonstrates practical **full-stack JavaScript engineering, REST API design, authentication, authorization, MongoDB data modeling, media handling, notification workflows, application security, and automated testing**.
 
 ## Author
 
@@ -248,4 +281,4 @@ AI Engineer • Full Stack Developer • Generative AI & RAG Specialist
 
 ## License
 
-MIT — see [LICENSE](LICENSE).
+MIT — see [`LICENSE`](LICENSE).
