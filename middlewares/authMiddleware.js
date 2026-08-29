@@ -3,9 +3,6 @@ const User = require("../models/User");
 
 const protect = async (req, res, next) => {
   try {
-    // ==========================================
-    // Get Authorization Header
-    // ==========================================
     const authHeader = req.headers.authorization;
 
     if (!authHeader) {
@@ -15,8 +12,6 @@ const protect = async (req, res, next) => {
       });
     }
 
-    // Expected format:
-    // Authorization: Bearer <JWT>
     const parts = authHeader.trim().split(/\s+/);
 
     if (
@@ -32,9 +27,6 @@ const protect = async (req, res, next) => {
 
     const token = parts[1];
 
-    // ==========================================
-    // Verify JWT
-    // ==========================================
     if (!process.env.JWT_SECRET) {
       console.error("AUTH ERROR: JWT_SECRET is not configured.");
 
@@ -46,28 +38,13 @@ const protect = async (req, res, next) => {
 
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-    // ==========================================
-    // TEMPORARY AUTH DEBUG
-    // ==========================================
-    console.log("========================================");
-    console.log("AUTH DEBUG");
-    console.log("JWT decoded:", decoded);
-    console.log("JWT user ID:", decoded.id);
-    console.log("========================================");
-
-    // ==========================================
-    // Validate JWT Payload
-    // ==========================================
-    if (!decoded || !decoded.id) {
+    if (!decoded || typeof decoded !== "object" || !decoded.id) {
       return res.status(401).json({
         success: false,
         message: "Invalid token payload.",
       });
     }
 
-    // ==========================================
-    // Find User
-    // ==========================================
     const user = await User.findById(decoded.id).select("-password");
 
     if (!user) {
@@ -77,27 +54,18 @@ const protect = async (req, res, next) => {
       });
     }
 
-    // ==========================================
-    // Attach User To Request
-    // ==========================================
+    if (!user.isActive) {
+      return res.status(403).json({
+        success: false,
+        message: "This account is inactive.",
+      });
+    }
+
     req.user = user;
-
-    // ==========================================
-    // TEMPORARY AUTH DEBUG
-    // ==========================================
-    console.log("AUTH USER:", {
-      id: user._id.toString(),
-      name: user.name,
-      email: user.email,
-    });
-
-    console.log("========================================");
-
     next();
   } catch (error) {
-    console.error("AUTH ERROR:", error);
+    console.error("AUTH ERROR:", error.message);
 
-    // JWT-specific errors
     if (error.name === "TokenExpiredError") {
       return res.status(401).json({
         success: false,
