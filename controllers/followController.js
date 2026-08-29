@@ -4,86 +4,39 @@ const Follow = require("../models/Follow");
 const User = require("../models/User");
 const Notification = require("../models/Notification");
 
-// ==========================================
-// Helper: Validate MongoDB ObjectId
-// ==========================================
-
 const isValidObjectId = (id) => {
     return mongoose.Types.ObjectId.isValid(id);
 };
 
-
-// ==========================================
-// Follow User
-// POST /api/follow/:id
-// Protected
-// ==========================================
-
 exports.followUser = async (req, res) => {
     try {
-        // ------------------------------------------
-        // Authentication check
-        // ------------------------------------------
-        if (
-            !req.user ||
-            !req.user._id
-        ) {
+        if (!req.user || !req.user._id) {
             return res.status(401).json({
                 success: false,
-                message:
-                    "Authentication required.",
+                message: "Authentication required.",
             });
         }
 
-        const followerId =
-            req.user._id;
+        const followerId = req.user._id;
+        const followingId = req.params.id;
 
-        const followingId =
-            req.params.id;
-
-
-        // ------------------------------------------
-        // Validate target user ID
-        // ------------------------------------------
-
-        if (
-            !isValidObjectId(
-                followingId
-            )
-        ) {
+        if (!isValidObjectId(followingId)) {
             return res.status(400).json({
                 success: false,
                 message: "Invalid user ID.",
             });
         }
 
-
-        // ------------------------------------------
-        // Prevent self-follow
-        // ------------------------------------------
-
-        if (
-            followerId.toString() ===
-            followingId.toString()
-        ) {
+        if (followerId.toString() === followingId.toString()) {
             return res.status(400).json({
                 success: false,
-                message:
-                    "You cannot follow yourself.",
+                message: "You cannot follow yourself.",
             });
         }
 
-
-        // ------------------------------------------
-        // Check target user
-        // ------------------------------------------
-
-        const targetUser =
-            await User.findById(
-                followingId
-            ).select(
-                "_id name email profilePicture followersCount followingCount"
-            );
+        const targetUser = await User.findById(followingId).select(
+            "_id name email profilePicture followersCount followingCount isActive"
+        );
 
         if (!targetUser) {
             return res.status(404).json({
@@ -92,368 +45,186 @@ exports.followUser = async (req, res) => {
             });
         }
 
-
-        // ------------------------------------------
-        // Check existing relationship
-        // ------------------------------------------
-
-        const existingFollow =
-            await Follow.findOne({
-                follower: followerId,
-                following: followingId,
+        if (!targetUser.isActive) {
+            return res.status(403).json({
+                success: false,
+                message: "This account is inactive.",
             });
+        }
+
+        const existingFollow = await Follow.findOne({
+            follower: followerId,
+            following: followingId,
+        });
 
         if (existingFollow) {
             return res.status(400).json({
                 success: false,
-                message:
-                    "Already following this user.",
+                message: "Already following this user.",
             });
         }
-
-
-        // ------------------------------------------
-        // Create follow relationship
-        // ------------------------------------------
 
         let follow;
 
         try {
-            follow =
-                await Follow.create({
-                    follower: followerId,
-                    following: followingId,
-                });
-
+            follow = await Follow.create({
+                follower: followerId,
+                following: followingId,
+            });
         } catch (error) {
-
-            // MongoDB duplicate-key protection
             if (error.code === 11000) {
                 return res.status(400).json({
                     success: false,
-                    message:
-                        "Already following this user.",
+                    message: "Already following this user.",
                 });
             }
-
             throw error;
         }
 
-
-        // ------------------------------------------
-        // Update follower/following counters
-        // ------------------------------------------
-
         await Promise.all([
-            User.findByIdAndUpdate(
-                followerId,
-                {
-                    $inc: {
-                        followingCount: 1,
-                    },
-                }
-            ),
-
-            User.findByIdAndUpdate(
-                followingId,
-                {
-                    $inc: {
-                        followersCount: 1,
-                    },
-                }
-            ),
+            User.findByIdAndUpdate(followerId, {
+                $inc: { followingCount: 1 },
+            }),
+            User.findByIdAndUpdate(followingId, {
+                $inc: { followersCount: 1 },
+            }),
         ]);
 
-
-        // ------------------------------------------
-        // Create follow notification
-        // ------------------------------------------
-
         try {
-            const followerUser =
-                await User.findById(
-                    followerId
-                ).select(
-                    "_id name email profilePicture"
-                );
+            const followerUser = await User.findById(followerId).select(
+                "_id name profilePicture"
+            );
 
             if (followerUser) {
-
                 const existingUnreadFollowNotification =
                     await Notification.findOne({
-                        recipient:
-                            followingId,
-
-                        sender:
-                            followerId,
-
-                        type:
-                            "follow",
-
-                        isRead:
-                            false,
+                        recipient: followingId,
+                        sender: followerId,
+                        type: "follow",
+                        isRead: false,
                     });
 
                 if (!existingUnreadFollowNotification) {
                     await Notification.create({
-                        recipient:
-                            followingId,
-
-                        sender:
-                            followerId,
-
-                        type:
-                            "follow",
-
-                        message:
-                            `${followerUser.name} started following you.`,
+                        recipient: followingId,
+                        sender: followerId,
+                        type: "follow",
+                        message: `${followerUser.name} started following you.`,
                     });
                 }
             }
-
-        } catch (
-            notificationError
-        ) {
-
-            // Notification failure should not
-            // make the Follow operation fail.
+        } catch (notificationError) {
             console.error(
                 "FOLLOW NOTIFICATION ERROR:",
-                notificationError
+                notificationError.message
             );
         }
 
-
-        // ------------------------------------------
-        // Response
-        // ------------------------------------------
-
         return res.status(201).json({
             success: true,
-            message:
-                "User followed successfully.",
-
+            message: "User followed successfully.",
             follow: {
-                _id:
-                    follow._id,
-
-                follower:
-                    follow.follower,
-
-                following:
-                    follow.following,
-
-                createdAt:
-                    follow.createdAt,
+                _id: follow._id,
+                follower: follow.follower,
+                following: follow.following,
+                createdAt: follow.createdAt,
             },
         });
-
     } catch (error) {
-
-        console.error(
-            "FOLLOW ERROR:",
-            error
-        );
+        console.error("FOLLOW ERROR:", error.message);
 
         return res.status(500).json({
             success: false,
-            message:
-                error.message ||
-                "Failed to follow user.",
+            message: "Failed to follow user.",
         });
     }
 };
 
-
-// ==========================================
-// Unfollow User
-// DELETE /api/follow/:id
-// Protected
-// ==========================================
-
 exports.unfollowUser = async (req, res) => {
     try {
-        // ------------------------------------------
-        // Authentication check
-        // ------------------------------------------
-        if (
-            !req.user ||
-            !req.user._id
-        ) {
+        if (!req.user || !req.user._id) {
             return res.status(401).json({
                 success: false,
-                message:
-                    "Authentication required.",
+                message: "Authentication required.",
             });
         }
 
-        const followerId =
-            req.user._id;
+        const followerId = req.user._id;
+        const followingId = req.params.id;
 
-        const followingId =
-            req.params.id;
-
-
-        // ------------------------------------------
-        // Validate target user ID
-        // ------------------------------------------
-
-        if (
-            !isValidObjectId(
-                followingId
-            )
-        ) {
+        if (!isValidObjectId(followingId)) {
             return res.status(400).json({
                 success: false,
                 message: "Invalid user ID.",
             });
         }
 
-
-        // ------------------------------------------
-        // Find relationship
-        // ------------------------------------------
-
-        const relation =
-            await Follow.findOne({
-                follower: followerId,
-                following: followingId,
-            });
+        const relation = await Follow.findOne({
+            follower: followerId,
+            following: followingId,
+        });
 
         if (!relation) {
             return res.status(404).json({
                 success: false,
-                message:
-                    "Follow relationship not found.",
+                message: "Follow relationship not found.",
             });
         }
-
-
-        // ------------------------------------------
-        // Delete relationship
-        // ------------------------------------------
 
         await relation.deleteOne();
 
-
-        // ------------------------------------------
-        // Decrease counters
-        // ------------------------------------------
-
         await Promise.all([
-            User.findByIdAndUpdate(
-                followerId,
-                {
-                    $inc: {
-                        followingCount: -1,
-                    },
-                }
+            User.findOneAndUpdate(
+                { _id: followerId, followingCount: { $gt: 0 } },
+                { $inc: { followingCount: -1 } }
             ),
-
-            User.findByIdAndUpdate(
-                followingId,
-                {
-                    $inc: {
-                        followersCount: -1,
-                    },
-                }
+            User.findOneAndUpdate(
+                { _id: followingId, followersCount: { $gt: 0 } },
+                { $inc: { followersCount: -1 } }
             ),
         ]);
 
-        // ------------------------------------------
-        // Remove stale unread follow notification
-        // ------------------------------------------
         try {
             await Notification.deleteMany({
-                recipient:
-                    followingId,
-
-                sender:
-                    followerId,
-
-                type:
-                    "follow",
-
-                isRead:
-                    false,
+                recipient: followingId,
+                sender: followerId,
+                type: "follow",
+                isRead: false,
             });
         } catch (notificationError) {
-            // Notification cleanup must not make a successful
-            // unfollow operation fail.
             console.error(
                 "UNFOLLOW NOTIFICATION CLEANUP ERROR:",
-                notificationError
+                notificationError.message
             );
         }
 
-
-        // ------------------------------------------
-        // Response
-        // ------------------------------------------
-
         return res.status(200).json({
             success: true,
-            message:
-                "User unfollowed successfully.",
+            message: "User unfollowed successfully.",
             following: false,
         });
-
     } catch (error) {
-
-        console.error(
-            "UNFOLLOW ERROR:",
-            error
-        );
+        console.error("UNFOLLOW ERROR:", error.message);
 
         return res.status(500).json({
             success: false,
-            message:
-                error.message ||
-                "Failed to unfollow user.",
+            message: "Failed to unfollow user.",
         });
     }
 };
 
-
-// ==========================================
-// Get Followers
-// GET /api/follow/followers/:id
-// Public
-// ==========================================
-
-exports.getFollowers = async (
-    req,
-    res
-) => {
+exports.getFollowers = async (req, res) => {
     try {
-        const userId =
-            req.params.id;
+        const userId = req.params.id;
 
-
-        // ------------------------------------------
-        // Validate user ID
-        // ------------------------------------------
-
-        if (
-            !isValidObjectId(
-                userId
-            )
-        ) {
+        if (!isValidObjectId(userId)) {
             return res.status(400).json({
                 success: false,
                 message: "Invalid user ID.",
             });
         }
 
-
-        // ------------------------------------------
-        // Check user exists
-        // ------------------------------------------
-
-        const user =
-            await User.findById(
-                userId
-            ).select("_id");
+        const user = await User.findById(userId).select("_id");
 
         if (!user) {
             return res.status(404).json({
@@ -462,91 +233,40 @@ exports.getFollowers = async (
             });
         }
 
-
-        // ------------------------------------------
-        // Get followers
-        // ------------------------------------------
-
-        const followers =
-            await Follow.find({
-                following: userId,
-            })
-                .populate(
-                    "follower",
-                    "name email profilePicture followersCount followingCount"
-                )
-                .sort({
-                    createdAt: -1,
-                });
-
-
-        // ------------------------------------------
-        // Response
-        // ------------------------------------------
+        const followers = await Follow.find({ following: userId })
+            .populate(
+                "follower",
+                "name email profilePicture followersCount followingCount"
+            )
+            .sort({ createdAt: -1 });
 
         return res.status(200).json({
             success: true,
-            count:
-                followers.length,
+            count: followers.length,
             followers,
         });
-
     } catch (error) {
-
-        console.error(
-            "GET FOLLOWERS ERROR:",
-            error
-        );
+        console.error("GET FOLLOWERS ERROR:", error.message);
 
         return res.status(500).json({
             success: false,
-            message:
-                error.message ||
-                "Failed to get followers.",
+            message: "Failed to get followers.",
         });
     }
 };
 
-
-// ==========================================
-// Get Following
-// GET /api/follow/following/:id
-// Public
-// ==========================================
-
-exports.getFollowing = async (
-    req,
-    res
-) => {
+exports.getFollowing = async (req, res) => {
     try {
-        const userId =
-            req.params.id;
+        const userId = req.params.id;
 
-
-        // ------------------------------------------
-        // Validate user ID
-        // ------------------------------------------
-
-        if (
-            !isValidObjectId(
-                userId
-            )
-        ) {
+        if (!isValidObjectId(userId)) {
             return res.status(400).json({
                 success: false,
                 message: "Invalid user ID.",
             });
         }
 
-
-        // ------------------------------------------
-        // Check user exists
-        // ------------------------------------------
-
-        const user =
-            await User.findById(
-                userId
-            ).select("_id");
+        const user = await User.findById(userId).select("_id");
 
         if (!user) {
             return res.status(404).json({
@@ -555,47 +275,24 @@ exports.getFollowing = async (
             });
         }
 
-
-        // ------------------------------------------
-        // Get following
-        // ------------------------------------------
-
-        const following =
-            await Follow.find({
-                follower: userId,
-            })
-                .populate(
-                    "following",
-                    "name email profilePicture followersCount followingCount"
-                )
-                .sort({
-                    createdAt: -1,
-                });
-
-
-        // ------------------------------------------
-        // Response
-        // ------------------------------------------
+        const following = await Follow.find({ follower: userId })
+            .populate(
+                "following",
+                "name email profilePicture followersCount followingCount"
+            )
+            .sort({ createdAt: -1 });
 
         return res.status(200).json({
             success: true,
-            count:
-                following.length,
+            count: following.length,
             following,
         });
-
     } catch (error) {
-
-        console.error(
-            "GET FOLLOWING ERROR:",
-            error
-        );
+        console.error("GET FOLLOWING ERROR:", error.message);
 
         return res.status(500).json({
             success: false,
-            message:
-                error.message ||
-                "Failed to get following list.",
+            message: "Failed to get following list.",
         });
     }
 };
